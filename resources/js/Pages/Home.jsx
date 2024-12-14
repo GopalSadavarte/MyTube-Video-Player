@@ -1,8 +1,9 @@
 import Layout from '../components/Layout/Layout'
-import { Head, Link } from '@inertiajs/react'
-import { useContext } from 'react'
+import { Head, Link, router } from '@inertiajs/react'
+import { useContext, useState, useRef, createRef } from 'react'
 import { ToggleContext } from '../components/Elements/ToggleMenuContext'
 import Slider from '../components/Slider'
+import { MdVolumeOff, MdVolumeUp } from 'react-icons/md'
 
 export default function Home ({ data }) {
     const toggle = useContext(ToggleContext)
@@ -15,27 +16,26 @@ export default function Home ({ data }) {
         'Facts',
         'Programming',
         'Jokes',
+        'New for you',
+        'Trending',
+        'News',
         'Entertainment',
         'Facts',
         'Programming',
         'Jokes',
+        'New for you',
+        'Trending',
+        'News',
         'Entertainment',
         'Facts',
         'Programming',
         'Jokes',
-        'Entertainment',
-        'Facts',
-        'Programming',
-        'Jokes',
-        'Entertainment',
-        'Facts',
-        'Programming',
-        'Jokes',
-        'Entertainment',
-        'Facts',
-        'Programming',
-        'Jokes'
+        'New for you'
     ]
+    const [volume, setVolume] = useState(false)
+    const [volumeClick, setVolumeClick] = useState(false)
+    const ref = createRef()
+    const videoRef = useRef(ref)
     return (
         <Layout>
             <Head title='MyTube' />
@@ -45,10 +45,16 @@ export default function Home ({ data }) {
                 }`}
             >
                 <Slider elements={elements} />
-                <div className=' w-full flex-wrap flex gap-3'>
+                <div className='w-full flex-wrap flex gap-3 my-2'>
                     {data.map((d, key) => {
                         return (
-                            <div className='w-52 h-40 rounded-sm' key={key}>
+                            <div
+                                className='h-60 w-[32%] overflow-hidden relative'
+                                onMouseLeave={e => {
+                                    setVolumeClick(false)
+                                }}
+                                key={key}
+                            >
                                 <Link
                                     href={
                                         '/show/' +
@@ -58,12 +64,48 @@ export default function Home ({ data }) {
                                     }
                                 >
                                     <video
+                                        ref={videoRef}
                                         src={d.video}
-                                        className='h-full w-full'
+                                        className='w-full h-52 object-cover rounded-md my-2'
+                                        onMouseOver={e => {
+                                            if (!volume) {
+                                                e.currentTarget.volume = 0
+                                            } else {
+                                                e.currentTarget.volume = 1
+                                            }
+                                            e.target.play()
+                                        }}
+                                        onMouseLeave={e => {
+                                            if (!volumeClick) e.target.pause()
+                                            e.currentTarget.currentTime = 0
+                                        }}
                                     ></video>
-                                    <figcaption>{d.v_name}</figcaption>
-                                    <p>{d.description}</p>
+
+                                    <div className='video-info w-full flex'>
+                                        <img
+                                            // src={d.channel_profile}
+                                            alt='profile'
+                                            className='h-5 w-5 rounded object-cover my-4 mx-4 '
+                                        />
+                                    </div>
                                 </Link>
+                                <MdVolumeOff
+                                    className={`absolute top-2 z-10 cursor-pointer  ${
+                                        volume ? 'hidden' : ''
+                                    }`}
+                                    onClick={e => {
+                                        setVolumeClick(true)
+                                        setVolume(true)
+                                    }}
+                                />
+                                <MdVolumeUp
+                                    className={`absolute top-2 z-10 cursor-pointer
+                                    ${volume ? '' : 'hidden'}`}
+                                    onClick={e => {
+                                        setVolumeClick(true)
+                                        setVolume(false)
+                                    }}
+                                />
                             </div>
                         )
                     })}

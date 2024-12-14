@@ -1,22 +1,33 @@
-import { usePage, Link } from '@inertiajs/react'
+import { usePage } from '@inertiajs/react'
 import Li from '../Elements/Li'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ToggleContext } from '../Elements/ToggleMenuContext'
 import {
     AiOutlineHome,
     AiFillHome,
-    AiOutlineFieldTime,
-    AiOutlineVideoCamera,
     AiOutlineLike,
     AiOutlineBulb,
-    AiFillVideoCamera,
     AiFillLike,
     AiFillBulb,
-    AiFillTrademarkCircle
+    AiOutlinePlaySquare,
+    AiOutlineClockCircle,
+    AiFillPlaySquare,
+    AiFillClockCircle,
+    AiOutlinePlayCircle,
+    AiFillPlayCircle,
+    AiFillCiCircle,
+    AiOutlineUser
 } from 'react-icons/ai'
+import { FaHistory, FaGreaterThan } from 'react-icons/fa'
+import {
+    MdPlaylistPlay,
+    MdSubscriptions,
+    MdOutlineVerifiedUser
+} from 'react-icons/md'
 
-export default function SideBar () {
+export default function SideBar ({ subscriptions }) {
     const page = usePage()
+    const [scrollDisplay, setScrollDisplay] = useState(false)
     const toggle = useContext(ToggleContext)
     const active = url => {
         return url === page.url
@@ -24,12 +35,23 @@ export default function SideBar () {
     return (
         <aside className='mt-0 flex'>
             <div
-                className={`w-fit bg-gray-900 text-white h-screen overflow-scroll overflow-x-hidden transition-transform ${
-                    toggle[0] ? '-translate-x-80' : ''
+                className={`w-[15rem] bg-gray-900 text-white h-screen overflow-scroll overflow-x-hidden ${
+                    toggle[0] ? 'hidden' : ''
                 }`}
+                onMouseEnter={e => {
+                    setScrollDisplay(true)
+                }}
+                onMouseLeave={e => {
+                    setScrollDisplay(false)
+                }}
+                style={
+                    scrollDisplay
+                        ? { scrollbarWidth: '' }
+                        : { scrollbarWidth: 'none' }
+                }
                 id='sidebar'
             >
-                <ul className='w-60'>
+                <ul className='w-60 border-b-[1px] border-gray-600'>
                     <Li
                         url='/'
                         IconFill={<AiFillHome className='my-auto text-2xl' />}
@@ -40,54 +62,171 @@ export default function SideBar () {
                         linkName='Home'
                     />
                     <Li
-                        url='/'
-                        IconFill={
-                            <AiFillTrademarkCircle className='my-auto text-2xl' />
-                        }
+                        url='/j'
                         IconOutline={
-                            <AiOutlineFieldTime className='my-auto text-2xl' />
+                            <AiOutlinePlayCircle className='my-auto text-2xl' />
+                        }
+                        IconFill={
+                            <AiFillPlayCircle className='my-auto text-2xl' />
                         }
                         func={active}
-                        linkName='Home'
+                        linkName='Shorts'
                     />
                     <Li
-                        url='/'
-                        IconFill={
-                            <AiFillVideoCamera className='my-auto text-2xl' />
-                        }
+                        url='/j'
                         IconOutline={
-                            <AiOutlineVideoCamera className='my-auto text-2xl' />
+                            <MdSubscriptions className='my-auto text-2xl' />
                         }
                         func={active}
-                        linkName='Home'
+                        linkName='Subscription'
+                    />
+                </ul>
+                <ul className='w-60 border-b-[1px] border-gray-600'>
+                    <li className='flex mx-5 my-2 gap-2'>
+                        <small className='text-[1rem] my-auto'>You</small>
+                        <FaGreaterThan className='my-auto text-[0.8rem] font-extrabold' />
+                    </li>
+                    <Li
+                        url='/j'
+                        IconFill={
+                            <AiFillPlaySquare className='my-auto text-2xl' />
+                        }
+                        IconOutline={
+                            <AiOutlinePlaySquare className='my-auto text-2xl' />
+                        }
+                        func={active}
+                        linkName='Your videos'
                     />
                     <Li
-                        url='/'
+                        url='/j'
+                        IconFill={
+                            <AiFillClockCircle className='my-auto text-2xl' />
+                        }
+                        IconOutline={
+                            <AiOutlineClockCircle className='my-auto text-2xl' />
+                        }
+                        func={active}
+                        linkName='Watch later'
+                    />
+                    <Li
+                        url='/j'
+                        IconOutline={<FaHistory className='my-auto text-2xl' />}
+                        func={active}
+                        linkName='History'
+                    />
+                    <Li
+                        url='/j'
+                        IconOutline={
+                            <MdPlaylistPlay className='my-auto text-2xl' />
+                        }
+                        func={active}
+                        linkName='Playlists'
+                    />
+                    <Li
+                        url='/i'
                         IconFill={<AiFillLike className='my-auto text-2xl' />}
                         IconOutline={
                             <AiOutlineLike className='my-auto text-2xl' />
                         }
                         func={active}
-                        linkName='Home'
+                        linkName='Liked videos'
                     />
                     <Li
-                        url='/'
+                        url='/j'
                         IconFill={<AiFillBulb className='my-auto text-2xl' />}
                         IconOutline={
                             <AiOutlineBulb className='my-auto text-2xl' />
                         }
                         func={active}
-                        linkName='Home'
+                        linkName='Your courses'
                     />
                 </ul>
-            </div>
-            <div className='hidden-side-element bg-gray-900 text-white hidden'>
-                <ul>
-                    <li>
-                        <Link>
-                            <AiFillHome />
-                        </Link>
+                <ul className='w-60 my-3 border-b-[1px] border-gray-600'>
+                    <li className='flex mx-5 my-2 gap-2'>
+                        <small className='text-[1rem] my-auto'>
+                            Subscriptions
+                        </small>
                     </li>
+                    {subscriptions.map((channel, key) => {
+                        return (
+                            <Li
+                                key={key}
+                                url={'channel/' + channel.channel.channel_name}
+                                IconOutline={
+                                    <img
+                                        src={channel.channel.profile_picture}
+                                        alt={
+                                            <AiFillCiCircle className='text-xl' />
+                                        }
+                                        className='rounded-full object-contain size-6'
+                                    />
+                                }
+                                func={active}
+                                linkName={channel.channel.channel_name}
+                            />
+                        )
+                    })}
+                </ul>
+            </div>
+            <div
+                className={`hidden-side-element w-24 bg-gray-900 text-white ${
+                    toggle[0] ? '' : 'hidden'
+                }`}
+            >
+                <ul className='w-fit p-1 -mx-4'>
+                    <Li
+                        url='/'
+                        linkName='Home'
+                        IconOutline={
+                            <AiOutlineHome className='text-2xl mx-3' />
+                        }
+                        IconFill={<AiFillHome className='text-2xl mx-3' />}
+                        func={active}
+                        hiddenSidebar={true}
+                    />
+                    <Li
+                        url={'/hdgf'}
+                        linkName='Likes'
+                        IconOutline={
+                            <AiOutlineLike className='text-2xl mx-3' />
+                        }
+                        IconFill={<AiFillLike className='text-2xl mx-3' />}
+                        func={active}
+                        hiddenSidebar={true}
+                    />
+                    <Li
+                        url={'/hgdh'}
+                        IconOutline={
+                            <AiOutlinePlayCircle className='text-2xl mx-3' />
+                        }
+                        IconFill={
+                            <AiFillPlayCircle className='text-2xl mx-3' />
+                        }
+                        func={active}
+                        linkName='Shorts'
+                        hiddenSidebar={true}
+                    />
+                    <Li
+                        url={'/dh'}
+                        IconOutline={
+                            <MdSubscriptions className='text-2xl mx-3' />
+                        }
+                        func={active}
+                        linkName='Subscription'
+                        hiddenSidebar={true}
+                    />
+                    <Li
+                        url='/hgdh'
+                        IconOutline={
+                            <AiOutlineUser className='text-2xl mx-3' />
+                        }
+                        IconFill={
+                            <MdOutlineVerifiedUser className='text-2xl mx-3' />
+                        }
+                        func={active}
+                        linkName='You'
+                        hiddenSidebar={true}
+                    />
                 </ul>
             </div>
         </aside>

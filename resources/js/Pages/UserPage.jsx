@@ -33,7 +33,7 @@ export default function UserPage () {
     return (
         <Layout>
             <Head title='User Dashboard' />
-            <div className='container bg-gray-900 text-white'>
+            <div className='container bg-gray-900 text-white h-screen'>
                 <p>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Amet dolorem facere rem voluptatem sunt illum quidem, ab

@@ -12,3 +12,5 @@ Route::get('/f', [UsersController::class, 'index']);
 Route::get('/h', [UsersController::class, 'index']);
 Route::get('/i', [UsersController::class, 'index']);
 Route::get('/user-dashboard', [UsersController::class, 'getUser']);
+Route::get('/fetch/{query}', [UsersController::class, 'fetchData']);
+Route::get('/read', [UsersController::class, 'getData']);
