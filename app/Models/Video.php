@@ -11,16 +11,13 @@ class Video extends Model
 {
     protected $guarded = [];
 
-    // protected $connection = 'elasticsearch';
-
-    // protected $index = 'videos';
-
-    // const MAX_SIZE = 10000;
-    // const CREATED_AT = null;
-    // const UPDATED_AT = null;
-
     protected function video(): Attribute
     {
         return Attribute::make(get: fn($value) => asset('storage/' . $value));
+    }
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id', 'id')->select('channel_name', 'id');
     }
 }

@@ -37,7 +37,6 @@ export default function Dashboard ({ data, allVideos }) {
         'Programming',
         'Jokes'
     ]
-    console.log(allVideos)
     return (
         <Layout>
             <Head title='MyTube' />
@@ -49,7 +48,7 @@ export default function Dashboard ({ data, allVideos }) {
                 <Slider elements={elements} />
                 <div className='w-full flex-wrap flex gap-3'>
                     {data[0].video ? (
-                        <Video path={data[0].video} />
+                        <Video video={data} />
                     ) : (
                         <div className='top-10 left-2 select-none relative bg-gray-700 items-center content-center h-[90vh] w-[70%]'>
                             <small className='mx-[45%]'>Not Available</small>

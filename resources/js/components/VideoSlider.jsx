@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
+import logo from '../../../public/img/logo.png'
 
 export default function VideoSlider ({ videos }) {
     return (
@@ -12,22 +13,28 @@ export default function VideoSlider ({ videos }) {
                             video.video.split('videos/')[1].split('.')[0]
                         }
                     >
-                        <div className='video h-40 my-8 w-full' key={key}>
+                        <div
+                            className='video h-fit my-8 w-full ml-2 hover:bg-gray-800'
+                            key={key}
+                        >
                             <video
                                 src={video.video}
-                                className='h-32 w-full object-cover rounded-md'
+                                className='h-36 w-full object-cover rounded-md'
                             ></video>
                             <div className='desc flex'>
                                 <img
-                                    // src={video.profile}
+                                    src={logo}
                                     alt='profile'
-                                    className='rounded-full h-7 w-7 object-cover'
+                                    className='rounded-full size-9 my-3 object-cover'
                                 />
                                 <figcaption className='mx-3 text-xl block'>
                                     {video.v_name}
-                                    <div className='flex'>
-                                        <small>channel name</small>
-                                        <small>view : 8000</small>
+                                    <div className='flex gap-x-2 text-sm'>
+                                        <small>
+                                            {video.channel.channel_name}
+                                        </small>
+                                        <small>{'views: ' + video.views}</small>
+                                        <small>{'likes: ' + video.likes}</small>
                                     </div>
                                 </figcaption>
                             </div>

@@ -1,7 +1,8 @@
 import logo1 from '../../../../public/img/logo.png'
-import { Link, router } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 import { ToggleContext } from '../Elements/ToggleMenuContext'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useRef } from 'react'
+import { useSearch } from '../hooks/useSearch'
 import {
     AiOutlineMenu,
     AiOutlineSearch,
@@ -11,22 +12,23 @@ import {
     AiOutlinePlus
 } from 'react-icons/ai'
 import { gsap } from 'gsap'
+import SuggestionList from '../SuggestionList'
 
 export default function Navbar () {
     const toggle = useContext(ToggleContext)
-    const searchLinkRef = useRef()
+    const searchButtonRef = useRef()
     const menuRef = useRef(null)
-    const [searchQuery, setQuery] = useState({})
-    const handleSearch = e => {
-        e.preventDefault()
-        if (e.key === 'Enter' && searchQuery !== null && searchQuery !== '') {
-            router.post('/elastic', searchQuery, {
-                onSuccess: res => {
-                    console.log(res)
-                }
-            })
-        }
-    }
+    const {
+        searchResult,
+        search,
+        suggestions,
+        suggest,
+        errors,
+        query,
+        setQuery,
+        isLoading,
+        setSuggestions
+    } = useSearch('')
 
     const animate = () => {
         gsap.to('.menu-icon', {
@@ -40,6 +42,9 @@ export default function Navbar () {
             })
         }, 1000)
     }
+
+    // console.log(suggestions)
+
     return (
         <header id='Navbar'>
             <div className='navbar-container h-14 w-full bg-gray-900 px-4'>
@@ -71,32 +76,38 @@ export default function Navbar () {
                         id='search-input'
                     >
                         <input
-                            onKeyUp={handleSearch}
                             type='text'
                             name='search'
                             id='search'
-                            value={searchQuery.query}
+                            value={query}
                             onChange={e => {
-                                setQuery({ query: e.target.value })
+                                setQuery(e.target.value)
+                            }}
+                            onKeyUp={e => {
+                                if (e.key === 'Enter') {
+                                    searchButtonRef.current.click()
+                                }
+                                suggest()
                             }}
                             autoComplete='off'
                             placeholder='Search'
                             className='mx-auto w-full outline-none bg-gray-900 py-1 px-5 rounded-tl-full rounded-bl-full border border-gray-600 focus:border-blue-900'
                         />
                         <div className='px-3 bg-gray-600 rounded-br-full rounded-tr-full cursor-pointer'>
-                            <Link
-                                href={
-                                    `/fetch/` +
-                                    (searchQuery !== '' && searchQuery !== null
-                                        ? searchQuery
-                                        : 'not')
-                                }
-                                as='button'
-                                ref={searchLinkRef}
+                            <button
+                                ref={searchButtonRef}
+                                onClick={e => {
+                                    search()
+                                    setSuggestions([])
+                                }}
                             >
                                 <AiOutlineSearch className='text-2xl mt-1 mx-2' />
-                            </Link>
+                            </button>
                         </div>
+                        <SuggestionList
+                            suggestions={suggestions}
+                            setQuery={setQuery}
+                        />
                     </div>
                     <div
                         className='bg-gray-700 rounded-full h-full p-2 my-auto mx-3 hover:bg-gray-800 transition-all delay-75'
