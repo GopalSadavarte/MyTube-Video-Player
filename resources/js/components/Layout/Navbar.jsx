@@ -72,7 +72,7 @@ export default function Navbar () {
                         </Link>
                     </div>
                     <div
-                        className='search-bar my-auto ml-36 flex relative'
+                        className='search-bar my-auto ml-36 flex relative w-[35rem]'
                         id='search-input'
                     >
                         <input

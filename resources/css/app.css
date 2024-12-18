@@ -3,14 +3,6 @@
 @tailwind utilities;
 @tailwind variants;
 
-input[type='range']::-webkit-scrollbar-thumb {
-    @apply text-red-600;
-}
-
-#search-input input {
-    width: 35rem;
-}
-
 ::-webkit-scrollbar {
     @apply bg-gray-900;
     @apply w-1;
@@ -21,11 +13,6 @@ input[type='range']::-webkit-scrollbar-thumb {
     @apply bg-gray-600;
     @apply rounded-full;
     @apply w-4;
-}
-
-#slider,
-#video-view-container {
-    scrollbar-width: none;
 }
 
 .scrollbar-width-none {

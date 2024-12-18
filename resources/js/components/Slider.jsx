@@ -84,7 +84,7 @@ export default function Slider ({ elements }) {
                     <FaArrowRight className='text-gray-300 size-3' />
                 </div>
                 <div
-                    className='elements w-[96%] ml-6 overflow-x-scroll shadow-md'
+                    className='elements w-[96%] ml-6 overflow-x-scroll shadow-md scrollbar-width-none'
                     id='slider'
                     ref={sliderRef}
                     onScroll={e => {

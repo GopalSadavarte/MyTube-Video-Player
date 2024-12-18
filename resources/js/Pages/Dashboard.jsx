@@ -42,7 +42,7 @@ export default function Dashboard ({ data, allVideos }) {
             <Head title='MyTube' />
             <div
                 id='video-view-container'
-                className={`child transition-transform overflow-scroll bg-gray-900 text-white h-screen
+                className={`child transition-transform overflow-scroll bg-gray-900 text-white h-screen scrollbar-width-none
                     ${toggle[0] ? 'w-full' : 'w-screen'}`}
             >
                 <Slider elements={elements} />
